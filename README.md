@@ -35,7 +35,7 @@ Follow these steps to set up the project from scratch on **Windows**:
 ### **1️⃣ Clone the Repository**
 
 ```powershell
-git clone https:/github.com/Syntax-Read3r/_kokoro_tts_gradio_ui.git
+git clone https://github.com/Syntax-Read3r/_kokoro_tts_gradio_ui.git
 cd _kokoro_tts_gradio_ui
 ```
 
