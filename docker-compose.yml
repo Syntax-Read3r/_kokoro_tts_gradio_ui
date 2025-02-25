@@ -2,11 +2,22 @@ version: "3.8"
 
 services:
   kokoro-fastapi:
-    image: ghcr.io/remsky/kokoro-fastapi-cpu  # Use the CPU version (or change to GPU)
+    image: ghcr.io/remsky/kokoro-fastapi-gpu  # ✅ Ensure GPU version
     container_name: kokoro-fastapi
+    runtime: nvidia  # ✅ Explicitly set NVIDIA runtime
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all  # ✅ Allow access to all GPUs
+      - NVIDIA_DRIVER_CAPABILITIES=all  # ✅ Provide all driver capabilities
     ports:
       - "8880:8880"
     restart: always
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]  # ✅ Ensure GPU is used
 
   gradio-kokoro:
     build: .
@@ -16,4 +27,4 @@ services:
     ports:
       - "7860:7860"
     environment:
-      - API_URL=http://kokoro-fastapi:8880/v1  # Correct API call to Kokoro-FastAPI
+      - API_URL=http://kokoro-fastapi:8880/v1
