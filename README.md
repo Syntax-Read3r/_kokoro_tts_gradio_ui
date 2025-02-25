@@ -1,6 +1,6 @@
 # Kokoro TTS Windows Gradio UI 🎧
 
-![Kokoro TTS Gradio UI](assets/image.png)
+![Kokoro TTS Gradio UI](./assets/image.png)
 
 A **Gradio-based web interface** for **Kokoro-FastAPI**, providing **customizable text-to-speech (TTS)** with features like **voice selection, speech speed control, and multiple audio formats**. This setup integrates **FastAPI** and **Docker** to run efficiently on both **CPU** and **GPU**.
 
