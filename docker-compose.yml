@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  kokoro-fastapi:
+    image: ghcr.io/remsky/kokoro-fastapi-cpu  # Use the CPU version (or change to GPU)
+    container_name: kokoro-fastapi
+    ports:
+      - "8880:8880"
+    restart: always
+
+  gradio-kokoro:
+    build: .
+    container_name: gradio-kokoro
+    depends_on:
+      - kokoro-fastapi
+    ports:
+      - "7860:7860"
+    environment:
+      - API_URL=http://kokoro-fastapi:8880/v1  # Correct API call to Kokoro-FastAPI
