@@ -1,4 +1,4 @@
-# Kokoro TTS Windows Gradio UI 🎧
+# Kokoro TTS Gradio UI 🎧
 
 ![Kokoro TTS Gradio UI](./assets/image.png)
 
@@ -22,7 +22,7 @@ A **Gradio-based web interface** for **Kokoro-FastAPI**, providing **customizabl
 Before you begin, ensure you have the following installed:
 
 - **Docker Desktop** ([Install Docker](https://docs.docker.com/get-docker/))
-- **NVIDIA GPU with CUDA (optional but recommended)**
+- **NVIDIA GPU with CUDA (optional but recommended for GPU usage)**
 - **NVIDIA Container Toolkit** ([Setup Guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html))
 - **Python 3.9+** (only if running outside Docker)
 
@@ -39,9 +39,29 @@ git clone https://github.com/Syntax-Read3r/_kokoro_tts_gradio_ui.git
 cd _kokoro_tts_gradio_ui
 ```
 
-### **2️⃣ Ensure NVIDIA Container Toolkit is Installed (For GPU Users)**
+### **2️⃣ Choosing Between CPU and GPU Modes**
 
-If you have an **NVIDIA GPU**, make sure the **NVIDIA Container Toolkit** is installed:
+#### **💪 Running on CPU (Recommended for Simplicity)**
+
+Running the application on CPU is the **easiest** way to get started and does not require an NVIDIA GPU or extra setup:
+
+- Open `docker-compose.yml`
+- Locate the service definition for **kokoro-fastapi**
+- Replace the GPU image with the CPU image:
+
+```yaml
+services:
+  kokoro-fastapi:
+    image: ghcr.io/remsky/kokoro-fastapi-cpu
+```
+
+Then, proceed with **Step 4: Build & Run the Docker Containers** below.
+
+#### **🎯 Running on GPU (For Advanced Users)**
+
+If you want to leverage an **NVIDIA GPU**, follow these additional steps:
+
+1. **Ensure NVIDIA Container Toolkit is Installed**
 
 ```powershell
 docker run --rm --gpus all nvidia/cuda:12.4.1-base-ubuntu22.04 nvidia-smi
@@ -51,11 +71,24 @@ docker run --rm --gpus all nvidia/cuda:12.4.1-base-ubuntu22.04 nvidia-smi
 
 If not, follow [this guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html).
 
----
+2. **Modify `docker-compose.yml` to Use GPU Image**
 
-### **3️⃣ Update Docker Configuration (Windows)**
+```yaml
+services:
+  kokoro-fastapi:
+    image: ghcr.io/remsky/kokoro-fastapi-gpu:v0.2.1
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+```
 
-Open **PowerShell as Administrator** and configure Docker to use the NVIDIA runtime:
+3. **Update Docker Configuration**
+   Open **PowerShell as Administrator** and configure Docker to use the NVIDIA runtime:
 
 ```powershell
 notepad $env:ProgramData\Docker\config\daemon.json
