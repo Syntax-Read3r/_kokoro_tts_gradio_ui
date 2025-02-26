@@ -1,4 +1,4 @@
-# Kokoro TTS Gradio UI 🎧
+# Kokoro TTS with Gradio UI 🎧
 
 ![Kokoro TTS Gradio UI](./assets/image.png)
 
